@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const UpdatedMovie = props => {
-    const [movie, setMovie] = useState(props.movie);
-    console.log(movie);
-    console.log(props);
+    const [movie, setMovie] = useState({ 
+        id: '',
+        title: '',
+        director: '',
+        metascore: '',
+        stars: ''
+    });
 
     useEffect(() => {
         const movieEdit = props.movies.find(
@@ -13,7 +17,7 @@ const UpdatedMovie = props => {
         if (movieEdit) {
             setMovie(movieEdit);
         }
-    },[props.movie]);
+    },[props.movies]);
 
     const handleChange = e => {
         setMovie({
@@ -29,25 +33,25 @@ const UpdatedMovie = props => {
             .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
             .then(res => {
                 console.log(res);
-                // setMovie({
-                //     title: '',
-                //     director: '',
-                //     stars: []
-                // })
+                setMovie({
+                    title: '',
+                    director: '',
+                    stars: []
+                })
                 props.history.push('/')
             })
             .catch(err => console.log(err));   
     };
 
-    // const handleActors = e => {
-    //     e.preventDefault();
-    //     axios
-    //         .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
-    //         .then(res => {
-    //             console.log(res)
-    //         })
-    //         .catch(err => console.log(err))
-    // }
+    const handleActors = e => {
+        e.preventDefault();
+        axios
+            .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => console.log(err))
+    }
 
 
 
@@ -55,7 +59,7 @@ const UpdatedMovie = props => {
         <div className = 'movie-card'>
             <p>Update the movie using this form.</p>
             <form onSubmit = {handleSubmit}>
-                <label htmlFor = 'title'>Movie Title: 
+                <label htmlFor = 'title'>Movie Title: </label>
                     <input 
                         placeholder = 'Title'
                         name = 'title'
@@ -63,17 +67,15 @@ const UpdatedMovie = props => {
                         value = {movie.title}
                         onChange = {handleChange}
                     />
-                </label>
-                <label htmlFor = 'director'>Director:
+                <label htmlFor = 'director'>Director: </label>
                     <input 
                         placeholder = 'Director'
                         name = 'director'
                         type = 'text'
                         value = {movie.director}
                         onChange = {handleChange}
-                    /> 
-                </label>
-                <label htmlFor = 'metascore'>Metascore: 
+                    />
+                <label htmlFor = 'metascore'>Metascore: </label>
                     <input
                         placeholder = '94'
                         name = 'metascore'
@@ -81,16 +83,14 @@ const UpdatedMovie = props => {
                         value = {movie.metascore}
                         onChange = {handleChange}
                     />
-                </label>
-                <label htmlFor = 'Actors'>Actors:
+                <label htmlFor = 'Actors'>Actors: </label>
                     <input
                         placeholder = 'Actor'
                         name = 'stars'
                         type = 'text'
                         value = {movie.stars}
-                        onChange = {handleChange}
+                        onChange = {handleActors}
                     />
-                </label>
                 <button type = 'submit'>Update</button>
             </form>
         </div>
