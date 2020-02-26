@@ -7,8 +7,10 @@ const UpdatedMovie = props => {
         title: '',
         director: '',
         metascore: '',
-        stars: ''
+        stars: []
     });
+
+    console.log(props);
 
     useEffect(() => {
         const movieEdit = props.movies.find(
@@ -28,15 +30,22 @@ const UpdatedMovie = props => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        const newMovie = {
+            ...movie,
+            id: props.match.params.id,
+            stars: movie.stars.split( ',' )
+        }
         
+        console.log(newMovie);
+
         axios
-            .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
+            .put(`http://localhost:5000/api/movies/${props.match.params.id}`, newMovie)
             .then(res => {
                 console.log(res);
                 setMovie({
                     title: '',
                     director: '',
-                    stars: []
+                    stars: ''
                 })
                 props.history.push('/')
             })
@@ -46,9 +55,10 @@ const UpdatedMovie = props => {
     const handleActors = e => {
         e.preventDefault();
         axios
-            .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
+            .put(`http://localhost:5000/api/movies/${props.match.params.id}`, movie)
             .then(res => {
                 console.log(res)
+                
             })
             .catch(err => console.log(err))
     }
@@ -89,7 +99,7 @@ const UpdatedMovie = props => {
                         name = 'stars'
                         type = 'text'
                         value = {movie.stars}
-                        onChange = {handleActors}
+                        onChange = {handleChange}
                     />
                 <button type = 'submit'>Update</button>
             </form>
