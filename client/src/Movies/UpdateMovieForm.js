@@ -1,23 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-
-const initialState = {
-  id: "",
-  title: "",
-  director: "",
-  metascore: "",
-  stars: [
-    {
-      name: ""
-    }
-  ]
-};
+import axios from "axios"
 
 const UpdateMovieForm = props => {
   const [movie, setMovie] = useState({});
   const id = props.match.params.id
-//   const [stars, setStars] = useState({});
-//   console.log(stars);
 
   const handleChange = e => {
     e.preventDefault();

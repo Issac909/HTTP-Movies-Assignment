@@ -4,7 +4,7 @@ import { useRouteMatch, Link } from 'react-router-dom';
 import MovieCard from './MovieCard';
 
 
-function Movie({ addToSavedList }) {
+function Movie({ addToSavedList }, props) {
   const [movie, setMovie] = useState(null);
   const match = useRouteMatch();
 
@@ -18,6 +18,13 @@ function Movie({ addToSavedList }) {
   const saveMovie = () => {
     addToSavedList(movie);
   };
+
+  const handleDelete = id => {
+    axios
+      .delete(`http://localhost:5000/api/movies/${match.params.id}`)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+  }
 
   useEffect(() => {
     fetchMovie(match.params.id);
@@ -35,6 +42,7 @@ function Movie({ addToSavedList }) {
         Save
       </div>
       <Link to = {`/update-movie/${match.params.id}`}><button>Edit</button></Link>
+      <Link to = {'/'} onClick = {handleDelete}><button >Delete</button></Link>
     </div>
   );
 }
